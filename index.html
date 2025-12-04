@@ -1,0 +1,175 @@
+
+
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>To-Do List</title>
+
+<style>
+  body {
+    font-family: Arial, sans-serif;
+    background: #1c1c1c;
+    color: white;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+    margin: 0;
+  }
+
+  .todo-container {
+    width: 380px;
+    background: #222;
+    padding: 25px;
+    border-radius: 10px;
+  }
+
+  h2 {
+    text-align: center;
+    margin-bottom: 18px;
+  }
+
+  .input-area {
+    display: flex;
+    gap: 10px;
+  }
+
+  input {
+    flex: 1;
+    padding: 10px;
+    border-radius: 5px;
+    border: none;
+  }
+
+  button {
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    color: white;
+    font-size: 13px;
+    padding: 8px 12px;
+  }
+
+  #addBtn {
+    background: #3b82f6;
+  }
+  #addBtn:hover {
+    background: #2563eb;
+  }
+
+  ul {
+    margin-top: 20px;
+    padding: 0;
+    list-style: none;
+  }
+
+  li {
+    background: #333;
+    padding: 10px;
+    margin-bottom: 8px;
+    border-radius: 6px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+
+  .text {
+    flex: 1;
+  }
+
+  .btn-group {
+    display: flex;
+    gap: 6px;
+  }
+
+  /* /* .editBtn { background: #10b981; }
+  .editBtn:hover { background: #059669; } 
+
+  .deleteBtn { background: #ef4444; }
+  .deleteBtn:hover { background: #dc2626; }
+
+  .upBtn { background: #6d28d9; }
+  .upBtn:hover { background: #5b21b6; }
+
+  .downBtn { background: #d97706; } 
+  .downBtn:hover { background: #b45309; } */
+</style>
+</head>
+
+<body>
+<div class="todo-container">
+  <h2>To-Do List</h2>
+
+  <div class="input-area">
+    <input type="text" id="taskInput" placeholder="Enter a task...">
+    <button id="addBtn">Add</button>
+  </div>
+
+  <ul id="taskList"></ul>
+</div>
+
+<script>
+  const addBtn = document.getElementById("addBtn");
+  const taskInput = document.getElementById("taskInput");
+  const taskList = document.getElementById("taskList");
+
+  addBtn.addEventListener("click", addTask);
+
+  function addTask() {
+    if (taskInput.value.trim() === "") return;
+
+    const li = document.createElement("li");
+    const span = document.createElement("span");
+    span.classList.add("text");
+    span.textContent = taskInput.value;
+
+    const editBtn = document.createElement("button");
+    editBtn.textContent = "✏️";
+    editBtn.classList.add("editBtn");
+
+    const deleteBtn = document.createElement("button");
+    deleteBtn.textContent = "☠️";
+    deleteBtn.classList.add("deleteBtn");
+
+    const upBtn = document.createElement("button");
+    upBtn.textContent = "⬆";
+    upBtn.classList.add("upBtn");
+
+    const downBtn = document.createElement("button");
+    downBtn.textContent = "⬇";
+    downBtn.classList.add("downBtn");
+
+    const btnGroup = document.createElement("div");
+    btnGroup.classList.add("btn-group");
+    btnGroup.append(editBtn, deleteBtn, upBtn, downBtn);
+
+    li.appendChild(span);
+    li.appendChild(btnGroup);
+    taskList.appendChild(li);
+    taskInput.value = "";
+
+    // DELETE
+    deleteBtn.addEventListener("click", () => li.remove());
+
+    // EDIT
+    editBtn.addEventListener("click", () => {
+      const newText = prompt("Edit task:", span.textContent);
+      if (newText && newText.trim() !== "") span.textContent = newText;
+    });
+
+    // MOVE UP
+    upBtn.addEventListener("click", () => {
+      const prev = li.previousElementSibling;
+      if (prev) taskList.insertBefore(li, prev);
+    });
+
+    // MOVE DOWN
+    downBtn.addEventListener("click", () => {
+      const next = li.nextElementSibling;
+      if (next) taskList.insertBefore(next, li);
+    });
+  }
+</script>
+</body>
+</html>
